@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSL Bus Model Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20px;
+            padding: 0 10px;
+        }
+        img {
+            width: 90%;
+            max-width: 400px;
+            height: auto;
+            margin-bottom: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px;
+            width: 100%;
+            max-width: 300px;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Guess the HSL Bus Model</h1>
+
+<img id="busImage" src="" alt="Bus Image">
+
+<p>Type the bus model (example: Volvo 8900LE)</p>
+
+<input type="text" id="answer" placeholder="Enter bus model">
+<br>
+<button onclick="checkAnswer()">Submit</button>
+
+<p id="result"></p>
+
+<script>
+// Updated buses with double "jpg"
+const buses = [
+    { 
+        model: "BYD B15", 
+        image: "bydB15.jpg.Jpg"
+    },
+    { 
+        model: "Scania Suburban", 
+        image: "Scaniasuburbs.jpg.jpg"
+    },
+    { 
+        model: "Volvo 9700E", 
+        image: "Volvo9700e.jpg.Jpg"
+    },
+    { 
+        model: "Volvo 8900LE", 
+        image: "volvo8900le.jpg.jpg"
+    },
+    { 
+        model: "Scania Omniexpress", 
+        image: "omnixpress.jpg.jpg"
+    }
+];
+
+let currentBus = null;
+
+function newQuestion() {
+    currentBus = buses[Math.floor(Math.random() * buses.length)];
+    document.getElementById("busImage").src = currentBus.image;
+    document.getElementById("answer").value = "";
+    document.getElementById("result").textContent = "";
+}
+
+function checkAnswer() {
+    const userInput = document.getElementById("answer").value.trim().toLowerCase(); // Convert input to lowercase
+    const correctAnswer = currentBus.model.toLowerCase(); // Convert correct answer to lowercase
+
+    if (userInput === correctAnswer) {
+        document.getElementById("result").innerHTML = "<span style='color:green;'>Correct! 🎉</span>";
+        setTimeout(newQuestion, 2000);  // Change to new question after 2 seconds
+    } else {
+        document.getElementById("result").innerHTML = "<span style='color:red;'>Wrong! Correct model: " + currentBus.model + "</span>";
+    }
+}
+
+// Allow the user to press Enter to submit their answer
+document.getElementById("answer").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        checkAnswer();
+    }
+});
+
+window.onload = newQuestion;
+</script>
+
+</body>
+</html>
